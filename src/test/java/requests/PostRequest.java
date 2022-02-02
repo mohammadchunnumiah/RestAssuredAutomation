@@ -1,5 +1,6 @@
-package getRequests;
+package requests;
 
+import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -8,10 +9,10 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class GetRequest {
+public class PostRequest {
 
 	@Test
-	public void getRequestTesting() {
+	public void postRequest() {
 		// Specify base URI
 		RestAssured.baseURI = "https://reqres.in/api";
 
@@ -19,7 +20,18 @@ public class GetRequest {
 		RequestSpecification httpRequest = RestAssured.given();
 
 		// Response object
-		Response response = httpRequest.request(Method.GET, "/users?page=2");
+		// Payload
+		JSONObject requestParams = new JSONObject();
+
+		requestParams.put("name", "Micheal");
+		requestParams.put("job", "Tech Lead");
+
+		httpRequest.header("Content-Type", "application/json");
+
+		httpRequest.body(requestParams.toJSONString());  // attach above data to the request
+
+		// Response object
+		Response response = httpRequest.request(Method.POST, "/api/users");
 
 		// Print response in console window
 		String responseBody = response.getBody().asString();
@@ -28,11 +40,6 @@ public class GetRequest {
 		// status code validation
 		int statusCode = response.getStatusCode();
 		System.out.println("Status code is" + statusCode);
-		Assert.assertEquals(statusCode, 200);
-
-		// status line verification
-		String statusLine = response.getStatusLine();
-		System.out.println(statusLine);
-		Assert.assertEquals(statusLine, "HTTP/1.1 200 OK");
+		Assert.assertEquals(statusCode, 201);
 	}
 }
