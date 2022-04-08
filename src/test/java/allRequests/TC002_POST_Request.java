@@ -1,4 +1,4 @@
-package requests;
+package allRequests;
 
 import org.json.simple.JSONObject;
 import org.testng.Assert;

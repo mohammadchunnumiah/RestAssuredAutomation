@@ -1,4 +1,4 @@
-package requests;
+package allRequests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

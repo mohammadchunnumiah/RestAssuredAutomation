@@ -1,19 +1,17 @@
-package requests;
+package allRequests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.restassured.RestAssured;
-import io.restassured.http.Header;
-import io.restassured.http.Headers;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class TC004_GET_Request_PrintAllHeaders {
+public class TC003_GET_Request {
 	
 	@Test
-	public void verifyAllHeaders() 
+	public void getRequest() 
 	{
 		// Specify base URI
 		RestAssured.baseURI = "https://maps.googleapis.com";
@@ -28,13 +26,15 @@ public class TC004_GET_Request_PrintAllHeaders {
 		String responseBody = response.getBody().asString();
 		System.out.println("Response body is:" + responseBody);
 		
-		Headers allHeaders=response.headers();  //capture all the headers from response
+		//validating headers
+		String contentType=response.header("Content-Type");  //capture details of Content-Type header
+		System.out.println("Content Type is: "+contentType);
+		Assert.assertEquals(contentType, "application/xml; charset=UTF-8");
 		
-		for (Header header:allHeaders) 
-		{
-			System.out.println(header.getName()+ " ---> "+header.getValue());
-		}
-
+		String contentEncoding=response.header("Content-Encoding"); //capture details of Content-Encoding header
+		System.out.println("Content Encoding is:" +contentEncoding);
+		Assert.assertEquals(contentEncoding, "gzip");
+		
 	}
 
 }
